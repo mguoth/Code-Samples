@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Workflow.Abstractions;
 
-namespace Workflow.Library.Model
+namespace Workflow.Extensions.Model
 {
-    public class SubmitJobParam
+    public class TriggerBackgroundJobParam
     {
         public int JobDefinitionId { get; set; }
     }

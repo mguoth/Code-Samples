@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Workflow.Extensions\Workflow.Extensions.csproj" />
     <ProjectReference Include="..\Workflow.Framework\Workflow.Framework.csproj" />
-    <ProjectReference Include="..\Workflow.Library\Workflow.Library.csproj" />
   </ItemGroup>
 
   <ItemGroup>

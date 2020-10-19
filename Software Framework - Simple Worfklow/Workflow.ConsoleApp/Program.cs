@@ -3,7 +3,6 @@ using Model = Workflow.Framework.Model;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Reflection;
-using Workflow.Abstractions;
 using System.IO;
 using System.Linq;
 
@@ -15,16 +14,18 @@ namespace Workflow.ConsoleApp
         {
             if (args.Count() < 1)
             {
-                Console.WriteLine(@"Run ""Workflow.ConsoleApp <workflow-definition-filename.json>""");
+                Console.WriteLine(@"Missing argument.
+Syntax: ""Workflow.ConsoleApp <workflow-definition-filename.json>""");
                 return;
             }
 
-            string workflowdefinitionJson = File.ReadAllText(args[0]);
+            string workflowFileName = args[0];
+            string workflowJson = File.ReadAllText(workflowFileName);
+            Model.WorkflowDefinition workflowDefinition = JsonConvert.DeserializeObject<Model.WorkflowDefinition>(workflowJson);
+            workflowDefinition.FileName = workflowFileName;
 
-            Model.WorkflowDefinition workflowDefinition = JsonConvert.DeserializeObject<Model.WorkflowDefinition>(workflowdefinitionJson);
-            
-            //create workflow
-            Workflow.Framework.Workflow workflow = new Workflow.Framework.Workflow(workflowDefinition, Assembly.Load("Workflow.Library"));
+            //create and validate workflow
+            Workflow.Framework.Workflow workflow = new Workflow.Framework.Workflow(workflowDefinition, Assembly.Load("Workflow.Extensions"));
 
             //execute workflow
             await workflow.ExecuteAsync();

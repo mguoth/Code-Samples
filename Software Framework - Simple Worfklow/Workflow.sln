@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workflow.Abstractions", "Wo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workflow.Framework.Model", "Workflow.Framework.Model\Workflow.Framework.Model.csproj", "{FED68879-BEE7-4420-B5E9-BCB4F1665D8F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workflow.Library", "Workflow.Library\Workflow.Library.csproj", "{FAD7CB31-2C18-417C-89CA-9A460D0E8C8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workflow.Extensions", "Workflow.Extensions\Workflow.Extensions.csproj", "{FAD7CB31-2C18-417C-89CA-9A460D0E8C8A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workflow.Library.Model", "Workflow.Library.Model\Workflow.Library.Model.csproj", "{7AE75FEC-A3BC-43BF-A77C-1B70BC8CE4C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workflow.Extensions.Model", "Workflow.Extensions.Model\Workflow.Extensions.Model.csproj", "{7AE75FEC-A3BC-43BF-A77C-1B70BC8CE4C9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workflow.ConsoleApp", "Workflow.ConsoleApp\Workflow.ConsoleApp.csproj", "{07C5AA1B-B9ED-4DC2-BD42-7072BE463085}"
 EndProject

@@ -13,7 +13,7 @@
       }
     },
     {
-      "Type": "SubmitJob",
+      "Type": "TriggerBackgroundJob",
       "Param": {
         "JobDefinitionId": 1
       }

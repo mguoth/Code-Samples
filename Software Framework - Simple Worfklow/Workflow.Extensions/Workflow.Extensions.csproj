@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Workflow.Abstractions\Workflow.Abstractions.csproj" />
-    <ProjectReference Include="..\Workflow.Library.Model\Workflow.Library.Model.csproj" />
+    <ProjectReference Include="..\Workflow.Extensions.Model\Workflow.Extensions.Model.csproj" />
   </ItemGroup>
 
 </Project>

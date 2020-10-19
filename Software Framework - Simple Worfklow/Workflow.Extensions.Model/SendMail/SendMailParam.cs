@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using System.Text;
 
-namespace Workflow.Library.Model
+namespace Workflow.Extensions.Model
 {
     public class SendMailParam
     {
