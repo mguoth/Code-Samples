@@ -4,36 +4,22 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Reflection;
 using Workflow.Abstractions;
+using System.IO;
+using System.Linq;
 
-namespace TestConsole
+namespace Workflow.ConsoleApp
 {
     class Program
     {
         public static async Task Main(string[] args)
         {
-            string workflowdefinitionJson = @"
+            if (args.Count() < 1)
             {
-                Steps: [
-                {
-                    Type: ""SendMail"",
-                    Param: {
-                        MailDefinitionId: 1
-                    }
-                },
-                {
-                    Type: ""SendMail"",
-                    Param: {
-                        MailDefinitionId: 3
-                    }
-                },
-                {
-                    Type: ""SubmitJob"",
-                    Param: {
-                        JobDefinitionId: 1
-                    }
-                }
-                ]
-            }";
+                Console.WriteLine(@"Run ""Workflow.ConsoleApp <workflow-definition-filename.json>""");
+                return;
+            }
+
+            string workflowdefinitionJson = File.ReadAllText(args[0]);
 
             Model.WorkflowDefinition workflowDefinition = JsonConvert.DeserializeObject<Model.WorkflowDefinition>(workflowdefinitionJson);
             

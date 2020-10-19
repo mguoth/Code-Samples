@@ -10,4 +10,10 @@
     <ProjectReference Include="..\Workflow.Library\Workflow.Library.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="SampleWorkflow.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

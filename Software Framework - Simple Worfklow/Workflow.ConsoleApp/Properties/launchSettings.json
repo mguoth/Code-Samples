@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Workflow.ConsoleApp": {
+      "commandName": "Project",
+      "commandLineArgs": "SampleWorkflow.json"
+    }
+  }
+}
