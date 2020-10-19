@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Workflow.Framework.Model</RootNamespace>
+    <AssemblyName>Workflow.Framework.Model</AssemblyName>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Workflow.Framework\Workflow.Framework.csproj" />
+    <ProjectReference Include="..\Workflow.Library\Workflow.Library.csproj" />
+  </ItemGroup>
+
+</Project>

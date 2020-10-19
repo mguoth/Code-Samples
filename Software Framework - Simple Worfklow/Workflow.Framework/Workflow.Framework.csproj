@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Workflow.Abstractions\Workflow.Abstractions.csproj" />
+    <ProjectReference Include="..\Workflow.Framework.Model\Workflow.Framework.Model.csproj" />
+  </ItemGroup>
+
+</Project>
