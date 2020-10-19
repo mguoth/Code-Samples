@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Workflow.Abstractions;
-using Model = Workflow.Framework.Model;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
+using Workflow.Framework.Extensions;
 
 namespace Workflow.Framework
 {
@@ -41,7 +41,7 @@ namespace Workflow.Framework
                         throw new NotSupportedException($@"Step ""{step.Type}"" has invalid ""Param"" property type ""{step.Param.GetType()}""");
                     }
 
-                    IStep stepInstance = (IStep) TypeFactory.Current.CreateInstance(stepType, paramValue);
+                    IStep stepInstance = (IStep) stepType.GetConstructor(new Type[] { paramType }).Invoke(new object[] { paramValue });
 
                     this.Steps.Add(new Step(step, stepInstance));
                 }
