@@ -5,7 +5,6 @@ using Workflow.Abstractions;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 
 namespace Workflow.Framework
 {
