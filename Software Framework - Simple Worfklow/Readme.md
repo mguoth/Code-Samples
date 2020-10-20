@@ -86,7 +86,7 @@ This framework is able to process any workflow of supported step types just via 
 
 ## Extensibility
 Developers can also extend this framework about new step types in a very easy way.
-Every step type need to provide a model for step specific parameters ([workflow extensions model](Workflow.Extensions.Model) ) and step type implementation ([workflow extensions](Workflow.Extensions)), which inherits from abstract class `StepBase<TParam>` and that’s it.
+Every step type need to provide a model for step specific parameters ([workflow extensions model](Workflow.Extensions.Model) ) and step type implementation ([workflow extensions](Workflow.Extensions)). The implementation must inherit from abstract class `StepBase<TParam>` and must be decorated by `StepAttribute` to provide a string identifier which can be used in the step "Type" property from [workflow definition](#workflow-definition).
 
 Step specific parameters model:
 
