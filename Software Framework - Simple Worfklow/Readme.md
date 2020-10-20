@@ -61,7 +61,7 @@ Implementation of concrete steps functionality is part of framework [extensions]
 
 ## Usage
 
-You can run a workflow via provided [CLI](Workflow.CLI) (alternative to use it as [library]((Workflow.Framework))):
+You can run a workflow via provided [CLI](Workflow.CLI) (alternative to use it as [library](Workflow.Framework)):
 ```
 Workflow.CLI.exe "SampleWorkflow.json"
 ```
