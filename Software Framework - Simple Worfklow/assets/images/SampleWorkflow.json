@@ -1,0 +1,22 @@
+﻿{
+  "Steps": [
+    {
+      "Type": "SendMail",
+      "Param": {
+        "MailDefinitionId": 1
+      }
+    },
+    {
+      "Type": "SendMail",
+      "Param": {
+        "MailDefinitionId": 2
+      }
+    },
+    {
+      "Type": "TriggerBackgroundJob",
+      "Param": {
+        "JobDefinitionId": 1
+      }
+    }
+  ]
+}
