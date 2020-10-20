@@ -15,12 +15,12 @@ The system should send 2 different welcome mails, one to new user and another to
 ## Abstraction
 First, we need to think about when making abstraction is to find out similarities and common functionality which can be covered by generic framework code. From the sample workflow above, we can tell that the whole workflow consists of steps which are executed sequentially in the defined order. For the simplicity, we will not support execution of steps parallelly. Imagine, that step can be any custom functionality which can be executed by the framework. The framework controls the flow of the program and provides a common handling of failures and cross cutting concerns.
 
-On the other side, there are differences in the functionality of individual steps. First two steps with sending mail functionality are very similar (they are just sending different mails). But the third step with the trigger background job functionality is completely different. It naturally categorizes steps from sample workflow into two types, each of them has its specific parameters.
+On the other side, there are differences in the functionality of individual steps. First two steps with sending mail functionality are very similar (they are just sending different mails). But the third step with the trigger background job functionality is completely different. It naturally categorizes steps from sample workflow into two types. Each of them has its specific parameters.
 
-The common workflow functionality requires a common definition model as input. But the functionality which is specific for particular step type requires also specific definition models.
+## Workflow definition
+The framework requires a worfklow definition as an input. The definition is provided as JSON. It uses workflow definition [model](Workflow.Framework.Model/WorkflowDefinition.cs).
 
-Sample workflow definition
-The sample workflow can be modeled as following json:
+The sample workflow can be represented by following JSON definition:
 
 ```
 {
@@ -53,7 +53,11 @@ The sample workflow can be modeled as following json:
 Each step in the array has “Type” and “Param” property which are common. But the “Param” property contains a step specific data, which are needed for execution of particular step type.
 
 ## Framework code
-The basic framework functionality is approx 100 lines of the code [here](Software%20Framework%20-%20Simple%20Worfklow/Workflow.Framework/Workflow.cs). Implementations of concrete steps are covered framework extensions.
+The basic framework functionality is approx 100 lines of the code [here](Workflow.Framework/Workflow.cs).
+
+The framework ensures that all steps are instantiated via reflection, based on the step type from the JSON definition. The specific parameters are deserialised by the framework and are injected as models into step instances. Finally, all steps are sequentially processed and concrete step functionality is called.
+
+Implementation of concrete steps functionality is covered by framework [extensions](##Extensibility).
 
 ## Usage
 
@@ -78,11 +82,11 @@ The execution of workflow has successfully completed.
 ```
 
 ## The user defined workflows
-This framework is able to process any workflow of supported step types just via provided json definition. There is no additional code change or compilation needed. Such workflow definition can be provided not only by developer but also directly by the user (there is also possibility to develop UI which can be used for creating of workflow definitions instead of using JSON file as input).
+This framework is able to process any workflow of supported step types just via provided JSON definition. There is no additional code change or compilation needed. Such workflow definition can be provided not only by developer but also directly by the user (there is also possibility to develop UI which can be used for creating of workflow definitions instead of using JSON file as input).
 
 ## Extensibility
 Developers can also extend this framework about new step types in a very easy way.
-Every step type need to provide a model for step specific parameters and step type, which inherits from abstract class `StepBase<TParam>` and that’s it. The framework ensures that particular step type is instantiated, specific parameters model is injected and the concrete step functionality is called.
+Every step type need to provide a model for step specific parameters and step type implementation, which inherits from abstract class `StepBase<TParam>` and that’s it.
 
 Step specific parameters model:
 
@@ -93,7 +97,7 @@ public class SendMailParam
 }
 ```
 
-Step type:
+Step type implementation:
 ```
 [Step("SendMail")]
 public class SendMailStep : StepBase<SendMailParam>
