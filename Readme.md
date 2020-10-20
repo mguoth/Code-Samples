@@ -1,4 +1,4 @@
 # Code Samples
 
-[Creating  software framework of simple worfklow in .NET](Software Framework - Simple Worfklow/Readme.md)
+[Software framework representing a simple worfklow system in .NET Core](Software%20%Framework%20%-%20%Simple%20%Worfklow/Readme.md)
 

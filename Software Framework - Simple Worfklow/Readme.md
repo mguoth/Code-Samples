@@ -1,4 +1,4 @@
-# Creating  software framework of simple worfklow in .NET
+# Software framework representing a simple worfklow system in .NET Core
 
 ## Introduction
 
@@ -105,7 +105,6 @@ public class SendMailStep : StepBase<SendMailParam>
     protected override Task ExecuteAsync(IExecutionContext context)
     {
         context.UpdateStatus($@"Simulate sending mail with MailDefinitionId ""{this.Param.MailDefinitionId}""... Done");
-        }
 
         return Task.CompletedTask;
     }
