@@ -6,7 +6,7 @@ using System.Reflection;
 using System.IO;
 using System.Linq;
 
-namespace Workflow.ConsoleApp
+namespace Workflow.CLI
 {
     class Program
     {
