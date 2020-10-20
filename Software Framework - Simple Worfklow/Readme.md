@@ -18,7 +18,7 @@ First, we need to think about when making abstraction is to find out similaritie
 On the other side, there are differences in the functionality of individual steps. First two steps with sending mail functionality are very similar (they are just sending different mails). But the third step with the trigger background job functionality is completely different. It naturally categorizes steps from sample workflow into two types. Each of them has its specific parameters.
 
 ## Workflow definition
-The framework requires a worfklow definition as an input. The definition is provided as JSON. It uses workflow definition [model](Workflow.Framework.Model/WorkflowDefinition.cs).
+The framework requires a worfklow definition as an input. The definition is provided as JSON and uses [workflow framework model](Workflow.Framework.Model).
 
 The sample workflow can be represented by following JSON definition:
 
@@ -50,14 +50,14 @@ The sample workflow can be represented by following JSON definition:
 }
 ```
 
-Each step in the array has “Type” and “Param” property which are common. But the “Param” property contains a step specific data, which are needed for execution of particular step type.
+Each step in the array has “Type” and “Param” property which are common. But the “Param” property contains a step specific data, which are needed for execution of particular step type. These specific parameters use [workflow extensions model](Workflow.Extensions.Model).
 
 ## Framework code
 The basic framework functionality is approx 100 lines of the code [here](Workflow.Framework/Workflow.cs).
 
-The framework ensures that all steps are instantiated via reflection, based on the step type from the JSON definition. The specific parameters are deserialised by the framework and are injected as models into step instances. Finally, all steps are sequentially processed and concrete step functionality is called.
+The framework ensures that all steps are instantiated via reflection, based on the step type from the JSON definition. The specific parameters are deserialised by the framework and are injected as [step specific models](Workflow.Extensions.Model) into step instances. Finally, all steps are sequentially processed and concrete step functionality is called.
 
-Implementation of concrete steps functionality is covered by framework [extensions](##Extensibility).
+Implementation of concrete steps functionality is part of framework [extensions](#Extensibility).
 
 ## Usage
 
@@ -86,7 +86,7 @@ This framework is able to process any workflow of supported step types just via 
 
 ## Extensibility
 Developers can also extend this framework about new step types in a very easy way.
-Every step type need to provide a model for step specific parameters and step type implementation, which inherits from abstract class `StepBase<TParam>` and that’s it.
+Every step type need to provide a model for step specific parameters ([workflow extensions model](Workflow.Extensions.Model) ) and step type implementation ([workflow extensions](Workflow.Extensions)), which inherits from abstract class `StepBase<TParam>` and that’s it.
 
 Step specific parameters model:
 
