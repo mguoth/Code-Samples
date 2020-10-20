@@ -53,9 +53,9 @@ The sample workflow can be represented by following JSON definition:
 Each step in the array has “Type” and “Param” property which are common. But the “Param” property contains a step specific data, which are needed for execution of particular step type. These specific parameters use [workflow extensions model](Workflow.Extensions.Model).
 
 ## Framework code
-The basic framework functionality is approx 100 lines of the code [here](Workflow.Framework/Workflow.cs).
+The basic framework functionality is approx 100 lines of the [code](Workflow.Framework/Workflow.cs).
 
-The framework ensures that all steps are instantiated via reflection, based on the step type from the JSON definition. The specific parameters are deserialised by the framework and are injected as [step specific models](Workflow.Extensions.Model) into step instances. Finally, all steps are sequentially processed and concrete step functionality is called.
+The framework ensures that all steps are instantiated via reflection, based on the step type from the JSON definition. The specific parameters are deserialised by the framework and are injected as models into step instances. Finally, all steps are sequentially processed and concrete step functionality is called.
 
 Implementation of concrete steps functionality is part of framework [extensions](#Extensibility).
 
