@@ -11,7 +11,7 @@ The sample demonstrates a concrete workflow, which should be automatically execu
 
 The worfklow consists of 3 steps. First, the system sends two different welcome emails, one to the new user and another to existing users. Finally, it triggers a background job, which will add the new user into a particular AD group (e.g. “All employees”).
 
-![Sample workflow](Source/assets/images/SampleWorkflow.png)
+![Sample workflow](assets/images/SampleWorkflow.png)
 
 ## Abstraction
 First, we need to think about when making abstraction is to find out a common functionality which can be covered by generic framework code. Consider the sample workflow above. We can tell that the whole workflow consists of some steps, which are executed sequentially. For simplicity, our framework will not support the execution of steps in parallel.
