@@ -1,26 +1,30 @@
-# Software framework representing a simple worfklow system in .NET Core
+# How to create a software framework representing a simple worfklow system in C#
 
 ## Introduction
 
-The recent trend to deliver features as part of the bigger software platform which provides common functionality, infrastructure and user experience helps to simplify an implementation of such features. The features can be focused on implementation of concrete business requirements. It helps to deliver features faster and with less code. But this is also creating a high dependency on the platform code which is often shared and reused by all features. Such platform code becomes the crucial part of the software. The good platform code should be flexible enough not only to support all existing requirements, but it should be able to support a wide variety of new business requirements with fewer possible modifications. Its limitations can also become a feature blocker. Implementation of successful platforms is often a challenge also for experienced teams.
+The recent trend to deliver features as part of the bigger software platform becomes prevalent. Such a platform provides common functionality, shared infrastructure, and a uniform user experience intended to be reused by features. This offloads the code needed for the implementation of features, which can be focused on concrete business requirements. This approach helps to deliver features faster and with less effort. But it also creates a high dependency of features on the platform. Such the platform becomes a crucial part of the software. The platform limitations can be also blockers to the delivery of features. The good platform code should cover all existing features requirements. But moreover, it needs to be flexible enough to support a wide variety of new features requirements with fewer possible modifications. Implementation of successful platforms is often a challenge also for experienced teams.
 
-Platforms are often built by using of smaller software frameworks, which are abstractions providing a generic functionality which can be selectively changed by additional user code. In following lines, I will share a very small but powerful C# implementation of the software framework which represents a simple workflow system.
+Platforms are often built by using smaller software frameworks. The software framework is an abstraction providing a generic functionality that can be selectively changed by additional user code. In the following lines, I will share how to create a software framework representing a simple workflow system with a very small but powerful C# implementation in .NET Core.
 
 ## Sample workflow
-The sample demonstrates a concrete instance of workflow consisting of 3 steps, which should be automatically executed as part of the onboarding process for a new employee.
-The system should send 2 different welcome mails, one to new user and another to existing users. Finally, it should trigger a background job which will add the new user into particular AD group (e.g. “All employees”).
+The sample demonstrates a concrete workflow, which should be automatically executed as part of the onboarding process for a new employee. The new employee typically gets a new user record in the corporate AD. This event can be a trigger for our workflow.
+
+The worfklow consists of 3 steps. First, the system sends two different welcome emails, one to the new user and another to existing users. Finally, it triggers a background job, which will add the new user into a particular AD group (e.g. “All employees”).
 
 ![Sample workflow](assets/images/SampleWorkflow.png)
 
 ## Abstraction
-First, we need to think about when making abstraction is to find out similarities and common functionality which can be covered by generic framework code. From the sample workflow above, we can tell that the whole workflow consists of steps which are executed sequentially in the defined order. For the simplicity, we will not support execution of steps parallelly. Imagine, that step can be any custom functionality which can be executed by the framework. The framework controls the flow of the program and provides a common handling of failures and cross cutting concerns.
+First, we need to think about when making abstraction is to find out a common functionality which can be covered by generic framework code. Consider the sample workflow above. We can tell that the whole workflow consists of some steps, which are executed sequentially. For simplicity, our framework will not support the execution of steps in parallel.
 
-On the other side, there are differences in the functionality of individual steps. First two steps with sending mail functionality are very similar (they are just sending different mails). But the third step with the trigger background job functionality is completely different. It naturally categorizes steps from sample workflow into two types. Each of them has its specific parameters.
+The common framework functionality is the execution of given steps in the defined order. The basic framework doesn't care about the functionality of individual steps and the step is just an abstraction. Imagine, that the step can be any custom functionality that can be executed by the framework.  The framework controls the flow of the program, provides common handling of failures, and solves cross-cutting concerns.
+
+But from the sample workflow, we can identify differences in the functionality of individual steps. The first two steps with sending mail functionality are very similar (they are just sending different emails). But the third step, which triggers background work, is completely different.
+So, we can identify two types of steps, each of them having its custom functionality.
 
 ## Workflow definition
-The framework requires a worfklow definition as an input. The definition is provided as JSON and uses [workflow framework model](Workflow.Framework.Model).
+The framework requires a definition of steps which will be executed as an input. It will be called a worfklow definition and it can be parsed from a JSON file.
 
-The sample workflow can be represented by following JSON definition:
+The sample workflow can be represented by the following JSON worfklow definition:
 
 ```
 {
@@ -50,18 +54,21 @@ The sample workflow can be represented by following JSON definition:
 }
 ```
 
-Each step in the array has “Type” and “Param” property which are common. But the “Param” property contains a step specific data, which are needed for execution of particular step type. These specific parameters use [workflow extensions model](Workflow.Extensions.Model).
+Each step in the array has “Type” and “Param” properties. The "Type" property contains a string that identifies the type of step. 
+The “Param” property contains parameters, which are needed for the execution of a particular step. These parameters are specific to each type of step.
 
-## Framework code
+## Basic framework code
 The basic framework functionality is approx 100 lines of the [code](Workflow.Framework/Workflow.cs).
 
-The framework ensures that all steps are instantiated via reflection, based on the step type from the JSON definition. The specific parameters are deserialised by the framework and are injected as models into step instances. Finally, all steps are sequentially processed and concrete step functionality is called.
+The framework ensures that all steps are instantiated via reflection, based on the step type from the JSON definition. During the instantiation, the 
+specific parameters are parsed by the framework and injected into step instances.
+After all the steps are instantiated, they are sequentially executed by the framework and the custom step functionality is called.
 
-Implementation of concrete steps functionality is part of framework [extensions](#Extensibility).
+Implementation of custom steps functionality is part of framework [extensions](#Framework extensions).
 
 ## Usage
 
-You can run a workflow via provided [CLI](Workflow.CLI) (alternative to use it as [library](Workflow.Framework)):
+You can run a workflow via the provided [Workflow.CLI](Workflow.CLI) tool (you can also use worfklow framework as a [library](Workflow.Framework)):
 ```
 Workflow.CLI.exe "SampleWorkflow.json"
 ```
@@ -81,14 +88,15 @@ Step 3 of 3 <TriggerBackgroundJob>: Completed
 The execution of workflow has successfully completed.
 ```
 
-## The user defined workflows
-This framework is able to process any workflow of supported step types just via provided JSON definition. There is no additional code change or compilation needed. Such workflow definition can be provided not only by developer but also directly by the user (there is also possibility to develop UI which can be used for creating of workflow definitions instead of using JSON file as input).
+## The user-defined workflows
+This framework can process any workflow provided just via a JSON definition. Such a workflow definition can be also provided directly by the user, as there is no additional code change or compilation needed. It is also possible to develop UI, which can be used for creating workflow definitions instead of using JSON file as the input. But the workflow definition can contain only supported step types. Their implementation is part of the framework [extensions](#Framework extensions).
 
-## Extensibility
-Developers can also extend this framework about new step types in a very easy way.
-Every step type need to provide a model for step specific parameters ([workflow extensions model](Workflow.Extensions.Model) ) and step type implementation ([workflow extensions](Workflow.Extensions)). The implementation must inherit from abstract class `StepBase<TParam>` and must be decorated by `StepAttribute` to provide a string identifier which can be used in the step "Type" property from [workflow definition](#workflow-definition).
+## Framework extensions
+Framework extensions contain the implementation of custom functionality for all steps types, supported by the framework.
 
-Step specific parameters model:
+Every step type needs to provide a model for specific parameters and the step type implementation. The implementation must inherit from abstract class `StepBase<TParam>` and must be decorated by the `StepAttribute` to provide a string identifier that can be used in the step "Type" property of the workflow definition.
+
+Specific parameters model:
 
 ```
 public class SendMailParam
@@ -115,6 +123,4 @@ public class SendMailStep : StepBase<SendMailParam>
 }
 ```
 
-
-
-
+Developers can extend this framework about new step types in a very easy and safe way (without touching the basic framework code).
