@@ -124,3 +124,9 @@ public class SendMailStep : StepBase<SendMailParam>
 ```
 
 Developers can extend this framework about new step types in a very easy and safe way (without touching the basic framework code).
+
+## Summary
+
+This was an example of creating a software framework representing a backend functionality. But the very same principles can be applied to the frontend. Imagine that you need to develop a UI page with a dashboard, containing multiple widgets. The common framework functionality is the page with a layout system for widgets. The custom functionality is the content of the widget itself.
+
+By creating software frameworks, you can build very effective software platforms.
