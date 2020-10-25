@@ -1,17 +1,17 @@
-# How to create a software framework representing a simple worfklow system in C#
+# How to create a software framework representing a simple worfklow system in .NET Core
 
 ## Introduction
 
 The recent trend to deliver features as part of the bigger software platform becomes prevalent. Such a platform provides common functionality, shared infrastructure, and a uniform user experience intended to be reused by features. This offloads the code needed for the implementation of features, which can be focused on concrete business requirements. This approach helps to deliver features faster and with less effort. But it also creates a high dependency of features on the platform. Such the platform becomes a crucial part of the software. The platform limitations can be also blockers to the delivery of features. The good platform code should cover all existing features requirements. But moreover, it needs to be flexible enough to support a wide variety of new features requirements with fewer possible modifications. Implementation of successful platforms is often a challenge also for experienced teams.
 
-Platforms are often built by using smaller software frameworks. The software framework is an abstraction providing a generic functionality that can be selectively changed by additional user code. In the following lines, I will share how to create a software framework representing a simple workflow system with a very small but powerful C# implementation in .NET Core.
+Platforms are often built by using smaller software frameworks. The software framework is an abstraction providing a generic functionality that can be selectively changed by additional user code. In the following lines, I will share how to create a software framework representing a simple workflow system. The complete C# / .NET Core source code is included.
 
 ## Sample workflow
 The sample demonstrates a concrete workflow, which should be automatically executed as part of the onboarding process for a new employee. The new employee typically gets a new user record in the corporate AD. This event can be a trigger for our workflow.
 
 The worfklow consists of 3 steps. First, the system sends two different welcome emails, one to the new user and another to existing users. Finally, it triggers a background job, which will add the new user into a particular AD group (e.g. “All employees”).
 
-![Sample workflow](assets/images/SampleWorkflow.png)
+![Sample workflow](Source/assets/images/SampleWorkflow.png)
 
 ## Abstraction
 First, we need to think about when making abstraction is to find out a common functionality which can be covered by generic framework code. Consider the sample workflow above. We can tell that the whole workflow consists of some steps, which are executed sequentially. For simplicity, our framework will not support the execution of steps in parallel.
@@ -58,7 +58,7 @@ Each step in the array has “Type” and “Param” properties. The "Type" pro
 The “Param” property contains parameters, which are needed for the execution of a particular step. These parameters are specific to each type of step.
 
 ## Basic framework code
-The basic framework functionality is approx 100 lines of the [code](Workflow.Framework/Workflow.cs).
+The basic framework functionality is approx 100 lines of the [code](Source/Workflow.Framework/Workflow.cs).
 
 The framework ensures that all steps are instantiated via reflection, based on the step type from the JSON definition. During the instantiation, the 
 specific parameters are parsed by the framework and injected into step instances.
@@ -68,7 +68,7 @@ Implementation of custom steps functionality is part of framework [extensions](#
 
 ## Usage
 
-You can run a workflow via the provided [Workflow.CLI](Workflow.CLI) tool (you can also use worfklow framework as a [library](Workflow.Framework)):
+You can run a workflow via the provided [Workflow.CLI](Source/Workflow.CLI) tool (you can also use worfklow framework as a [library](Source/Workflow.Framework)):
 ```
 Workflow.CLI.exe "SampleWorkflow.json"
 ```
