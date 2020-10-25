@@ -9,22 +9,21 @@ Platforms are often built by using smaller software frameworks. The software fra
 ## Sample workflow
 The sample demonstrates a concrete workflow, which should be automatically executed as part of the onboarding process for a new employee. The new employee typically gets a new user record in the corporate AD. This event can be a trigger for our workflow.
 
-The worfklow consists of 3 steps. First, the system sends two different welcome emails, one to the new user and another to existing users. Finally, it triggers a background job, which will add the new user into a particular AD group (e.g. “All employees”).
+The sample worfklow consists of 3 steps. In the first two steps, the system sends two different welcome emails, one to the new user and another to existing users. In the last step, the system triggers a background job, which will add the new user into a particular AD group (e.g. “All employees”).
 
 ![Sample workflow](assets/images/SampleWorkflow.png)
 
 ## Abstraction
 First, we need to think about when making abstraction is to find out a common functionality which can be covered by generic framework code. Consider the sample workflow above. We can tell that the whole workflow consists of some steps, which are executed sequentially. For simplicity, our framework will not support the execution of steps in parallel.
 
-The common framework functionality is the execution of given steps in the defined order. The basic framework doesn't care about the functionality of individual steps and the step is just an abstraction. Imagine, that the step can be any custom functionality that can be executed by the framework.  The framework controls the flow of the program, provides common handling of failures, and solves cross-cutting concerns.
+The common framework functionality is the execution of given steps in the defined order. The basic framework doesn't care about the functionality of individual steps and the step is just an abstraction. Imagine, that the step can be any custom functionality that can be executed by the framework. The framework controls the flow of the program, provides common handling of failures, and solves cross-cutting concerns.
 
-But from the sample workflow, we can identify differences in the functionality of individual steps. The first two steps with sending mail functionality are very similar (they are just sending different emails). But the third step, which triggers background work, is completely different.
-So, we can identify two types of steps, each of them having its custom functionality.
+But from the sample workflow, we can also identify differences in the functionality of individual steps. The first two steps with sending mail functionality are very similar (they are just sending different emails). But the third step, which triggers background work, is completely different. So, we can identify two types of steps (SendMail and TriggerBackgroundJob), each of them having its custom functionality.
 
 ## Workflow definition
-The framework requires a definition of steps which will be executed as an input. It will be called a worfklow definition and it can be parsed from a JSON file.
+The framework requires a definition of steps to be executed as an input. It will be called a worfklow definition and it can be stored as a JSON file.
 
-The sample workflow can be represented by the following JSON worfklow definition:
+The sample workflow above can be represented by the following JSON worfklow definition:
 
 ```
 {
@@ -54,15 +53,12 @@ The sample workflow can be represented by the following JSON worfklow definition
 }
 ```
 
-Each step in the array has “Type” and “Param” properties. The "Type" property contains a string that identifies the type of step. 
-The “Param” property contains parameters, which are needed for the execution of a particular step. These parameters are specific to each type of step.
+Each step in the array has “Type” and “Param” properties. The "Type" property contains a string that identifies the type of step. The “Param” property contains parameters, which are needed for the execution of a particular step. These parameters are specific to each type of step.
 
 ## Basic framework code
 The basic framework functionality is approx 100 lines of the [code](Source/Workflow.Framework/Workflow.cs).
 
-The framework ensures that all steps are instantiated via reflection, based on the step type from the JSON definition. During the instantiation, the 
-specific parameters are parsed by the framework and injected into step instances.
-After all the steps are instantiated, they are sequentially executed by the framework and the custom step functionality is called.
+The framework ensures that all steps are instantiated via reflection, based on the step type from the JSON definition. During the instantiation, the specific parameters are parsed by the framework and injected into step instances. After all the steps are instantiated, they are sequentially executed by the framework and the custom step functionality is called.
 
 Implementation of custom steps functionality is part of framework [extensions](#Framework extensions).
 
@@ -73,7 +69,7 @@ You can run a workflow via the provided [Workflow.CLI](Source/Workflow.CLI) tool
 Workflow.CLI.exe "SampleWorkflow.json"
 ```
 
-Console output
+Console output:
 ```
 The execution of workflow definition "SampleWorkflow.json" has started...
 Step 1 of 3 <SendMail>: Started...
@@ -89,7 +85,7 @@ The execution of workflow has successfully completed.
 ```
 
 ## The user-defined workflows
-This framework can process any workflow provided just via a JSON definition. Such a workflow definition can be also provided directly by the user, as there is no additional code change or compilation needed. It is also possible to develop UI, which can be used for creating workflow definitions instead of using JSON file as the input. But the workflow definition can contain only supported step types. Their implementation is part of the framework [extensions](#Framework extensions).
+This framework can process any workflow provided just via a JSON definition. Such a workflow definition can be also created by the user, as there is no additional code change or compilation needed. It is also possible to develop UI, which can be used for creating workflow definitions instead of creating JSON files manually. But the workflow definition can contain only supported step types which implementation is part of the framework [extensions](#Framework extensions).
 
 ## Framework extensions
 Framework extensions contain the implementation of custom functionality for all steps types, supported by the framework.
