@@ -83,6 +83,7 @@ Step 3 of 3 <TriggerBackgroundJob>: Simulate trigerring background job with JobD
 Step 3 of 3 <TriggerBackgroundJob>: Completed
 The execution of workflow has successfully completed.
 ```
+For the sake of brevity, the custom steps implementation just simulates real workloads, and no real mail is sent or background job is triggered.
 
 ## The user-defined workflows
 This framework can process any workflow provided just via a JSON definition. Such a workflow definition can be also created by the user, as there is no additional code change or compilation needed. It is also possible to develop UI, which can be used for creating workflow definitions instead of creating JSON files manually. But the workflow definition can contain only supported step types which implementation is part of the framework [extensions](#Framework extensions).
@@ -91,6 +92,8 @@ This framework can process any workflow provided just via a JSON definition. Suc
 Framework extensions contain the implementation of custom functionality for all steps types, supported by the framework.
 
 Every step type needs to provide a model for specific parameters and the step type implementation. The implementation must inherit from abstract class `StepBase<TParam>` and must be decorated by the `StepAttribute` to provide a string identifier that can be used in the step "Type" property of the workflow definition.
+
+### The "SendMail" step implementation example
 
 Specific parameters model:
 
@@ -114,11 +117,18 @@ public class SendMailStep : StepBase<SendMailParam>
     {
         context.UpdateStatus($@"Simulate sending mail with MailDefinitionId ""{this.Param.MailDefinitionId}""... Done");
 
+        //For the real functionality do something like:
+        //1. Load a mail definition by given id (can be stored in any repository)
+        //2. Use any service for sending mail (e.g. System.Net.Mail.SmtpClient);
+
         return Task.CompletedTask;
     }
 }
 ```
 
+The "SendMail" step type implementation just simulates the sending of mail. But it would be very easy to replace it with real functionality. The specific parameters contain the "MailDefinitionId" which can be used as an identifier of the mail definition stored in your repository (e.g. Database).
+
+### Extensibility
 Developers can extend this framework about new step types in a very easy and safe way (without touching the basic framework code).
 
 ## Summary

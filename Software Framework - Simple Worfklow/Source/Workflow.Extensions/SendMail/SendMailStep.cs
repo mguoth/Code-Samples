@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Workflow.Abstractions;
 
-namespace Workflow.Extensions.SendMail
+namespace Workflow.Extensions
 {
     [Step("SendMail")]
     public class SendMailStep : StepBase<Model.SendMailParam>
@@ -21,6 +21,10 @@ namespace Workflow.Extensions.SendMail
             {
                 context.UpdateStatus($@"Simulate sending mail with MailDefinitionId ""{this.Param.MailDefinitionId}""... Done");
             }
+
+            //For the real functionality do something like:
+            //1. Load a mail definition by given id (can be stored in any repository)
+            //2. Use any service for sending mail (e.g. System.Net.Mail.SmtpClient);
 
             return Task.CompletedTask;
         }
